@@ -22,6 +22,18 @@ module.exports.getProducts = (req, res, next) => {
     });
 }
 
+// Get Product
+module.exports.getProduct = (req, res, next) => {
+
+    const productId = req.params.productid;
+    const product = Product.getById(productId);
+    res.render('shop/product-detail', {
+        title:product.name,
+        product: product,
+        path:'/products'
+    })
+}
+
 // Get Product Detail
 module.exports.getProductDetail = (req, res, next) => {
 
@@ -49,7 +61,6 @@ module.exports.getOrders = (req, res, next) => {
     });
 }
 
-// ------------------------------
 
 // Get Add Product
 module.exports.getAddProduct = (req, res, next) => {

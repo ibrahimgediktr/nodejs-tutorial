@@ -1,3 +1,23 @@
 extends ../layout/main-layout.pug 
 block content
-    
+        .row
+            if products.length > 0
+                table.table.table-bordered 
+                    thead
+                        tr 
+                            th Image
+                            th Product Name
+                            th Price
+                            th
+
+                    tbody
+                        each product in products 
+                            tr 
+                                td 
+                                    img(src=`/images/${product.image}` width=80)
+                                td #{product.name}
+                                td #{product.price}
+                                td
+                                    a.btn.btn-primary.btn-sm(href=`/admin/products/${product.id}`) Edit
+            else 
+                h1 No Products
