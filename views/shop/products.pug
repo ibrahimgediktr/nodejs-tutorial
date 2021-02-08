@@ -1,10 +1,8 @@
-extends layout/main-layout.pug
+extends ../layout/main-layout.pug
 
-include mixins/createProduct.pug
+include ../mixins/createProduct.pug
 
 block content
-    include includes/carousel.pug
-
 
     .row
         if products.length > 0

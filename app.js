@@ -7,10 +7,10 @@ const app = express();
 app.set('view engine', 'pug');
 app.set('views', './views');
 
-const adminRoutes = require('./routes/admin');
-const userRoutes = require('./routes/user');
+const adminRoutes = require('./routes/adminRoutes');
+const userRoutes = require('./routes/shopRoutes');
 
-const errorController = require('./controllers/errors')
+const errorController = require('./controllers/errorController')
 
 app.use(bodyParser.urlencoded({
     extended: false

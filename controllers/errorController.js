@@ -1,5 +1,5 @@
 module.exports.get404Page = (req, res) => {
-    res.render('404.pug', {
+    res.render('error/404.pug', {
         title: 'Page Not Found | Shopping'
     })
 }
