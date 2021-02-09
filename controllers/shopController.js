@@ -1,12 +1,16 @@
 const Product = require('../models/productModel');
+const Category = require('../models/categoryModel');
 
 // Get Index
 module.exports.getIndex = (req, res, next) => {
 
     const products = Product.getAll();
+    const categories = Category.getAll();
+
     res.render('shop/index', {
         title: 'Homepage | Shopping',
         products: products,
+        categories: categories,
         path: '/'
     });
 }
@@ -15,11 +19,30 @@ module.exports.getIndex = (req, res, next) => {
 module.exports.getProducts = (req, res, next) => {
 
     const products = Product.getAll();
+    const categories = Category.getAll();
+
     res.render('shop/products', {
         title: 'Products | Shopping',
         products: products,
+        categories: categories,
         path: '/products'
     });
+}
+
+// Get Products By Id
+module.exports.getProductsByCategoryId = (req, res, next) => {
+
+    const categoryId = req.params.categoryid;
+    const products = Product.getProductsByCategoryId(categoryId)
+    const categories = Category.getAll();
+
+    res.render('shop/products', {
+        title: 'Products | Shopping',
+        products: products,
+        categories: categories,
+        selectedCategory: categoryId,
+        path: '/products'
+    })
 }
 
 // Get Product
@@ -27,10 +50,12 @@ module.exports.getProduct = (req, res, next) => {
 
     const productId = req.params.productid;
     const product = Product.getById(productId);
+
+
     res.render('shop/product-detail', {
-        title:product.name,
+        title: product.name,
         product: product,
-        path:'/products'
+        path: '/products'
     })
 }
 
@@ -72,7 +97,8 @@ module.exports.getAddProduct = (req, res, next) => {
 
 // Post Add Product
 module.exports.postAddProduct = (req, res, next) => {
-    const product = new Product(req.body.productName, req.body.productPrice, req.body.productImage, req.body.productDescription);
+
+    const product = new Product(req.body.productName, req.body.productPrice, req.body.productImage, req.body.productDescription, req.body.productCategory);
 
     product.saveProduct();
     res.redirect('/');

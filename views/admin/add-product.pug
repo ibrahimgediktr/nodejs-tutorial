@@ -20,7 +20,10 @@ block content
         .form-group.row
             label(for="productCategory").col-sm-2.col-form-label Category
             .col-sm-10
-                input.form-control#productCategory(type="text" name="productCategory")
+                select.form-control#productCategory(name="productCategory")
+                    option(value="-1") Select Category 
+                    each category in categories 
+                        option(value=`${category.id}`) #{category.name}
                 
 
         .form-group.row
