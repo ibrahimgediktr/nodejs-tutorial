@@ -13,6 +13,7 @@ router.get('/products/:productid', adminController.getEditProduct)
 
 router.post('/products', adminController.postEditProduct);
 
+router.post('/delete-product', adminController.postDeleteProduct);
 
 
 module.exports = router;

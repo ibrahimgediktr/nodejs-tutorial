@@ -37,4 +37,9 @@ module.exports = class Product {
         products[index].description = product.description
 
     }
+
+    static DeleteById(id){
+        const index = products.find(i => i.id === id);
+        products.splice(index, 1);
+    }
 }

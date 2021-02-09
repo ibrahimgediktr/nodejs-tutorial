@@ -8,7 +8,8 @@ module.exports.getProducts = (req, res, next) => {
     res.render('admin/products', {
         title: 'Admin Products | Shopping',
         products: products,
-        path: '/admin/products'
+        path: '/admin/products',
+        action : req.query.action
     });
 }
 
@@ -50,5 +51,10 @@ module.exports.postEditProduct = (req, res, next) => {
     product.description = req.body.productDescription
 
     Product.Update(product)
-    res.redirect('/');
+    res.redirect('/admin/products?action=edit');
+}
+
+module.exports.postDeleteProduct = (req, res, next) => {
+    Product.DeleteById(req.body.productid);
+    res.redirect('/admin/products?action=delete')
 }
