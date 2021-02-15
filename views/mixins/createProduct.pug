@@ -4,12 +4,13 @@ mixin createProduct(product)
             img(src=`/images/${product.image}` alt=`${product.name}`).card-img-top
             .card-body
                 h4.card-title
-                    a(href=`/products/${product.id}`) #{product.name}
+                    a(href=`/products/${product._id}`) #{product.name}
             
             .card-footer
                 small.text-muted
                     i.fas.fa-lira-sign #{product.price}
 
-                a(href=`/products/${product.id}`).btn.btn-outline-primary.btn-sm.ml-3 Details
-
-                a(href="#").btn.btn-outline-primary.btn-sm.float-right Add to Cart
+                a(href=`/products/${product._id}`).btn.btn-outline-primary.btn-sm.ml-3 Details
+                form(action='/cart' method='POST')
+                    input(type='hidden' name='productId' value=`${product._id}`)
+                    button(type='submit').btn.btn-outline-primary.btn-sm.ml-3 Add to Cart 

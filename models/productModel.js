@@ -1,84 +1,92 @@
-const products = [{
-        id: "13575",
-        name: 'Samsung S8',
-        price: 2500,
-        image: '1.jpg',
-        description: 'Good Phone',
-        categoryid: '1'
-    },
-    {
-        id: "65874",
-        name: 'Iphone 11',
-        price: 8000,
-        image: '2.jpg',
-        description: 'Perfect Phone',
-        categoryid: '1'
-    },
-    {
-        id: "23654",
-        name: 'Samsung Tablet',
-        price: 8000,
-        image: '5.jpg',
-        description: 'Perfect Tablet',
-        categoryid: '3'
-    },
-    {
-        id: "54658",
-        name: 'Xiamoi Laptop',
-        price: 8000,
-        image: '6.jpg',
-        description: 'Perfect Laptop',
-        categoryid: '2'
-    },
-    {
-        id: "15487",
-        name: 'Surface Laptop',
-        price: 3500,
-        image: '7.jpg',
-        description: 'Perfect Laptop',
-        categoryid: '2'
-    }
-];
+const getDb = require('../utility/database').getdb;
+const mongodb = require('mongodb');
 
-module.exports = class Product {
-    constructor(name, price, image, description, categoryid) {
-        this.id = (Math.floor(Math.random() * 99999 + 1)).toString();
+class Product {
+    constructor(name, price, description, image, categories, id , userId) {
         this.name = name;
         this.price = price;
-        this.image = image;
         this.description = description;
-        this.categoryid = categoryid
+        this.image = image;
+        this.categories = (categories && !Array.isArray(categories)) ? Array.of(categories) : categories;
+        this._id = id ? new mongodb.ObjectID(id) : null;
+        this.userId = userId
     }
 
-    saveProduct() {
-        products.push(this);
+    save() {
+        let db = getDb();
+
+        if(this._id){
+            db = db.collection('products').updateOne({_id: this._id}, {$set : this});
+
+        } else {
+            db = db.collection('products').insertOne(this);
+        }
+
+        return db
+            .then(result => {
+                console.log(result);
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
 
-    static getAll() {
-        return products;
+    static findAll() {
+        const db = getDb();
+
+        return db.collection('products')
+            .find()
+            .project({name:1, price:1, image:1})
+            .toArray()
+            .then(products => {
+                return products;
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
 
-    static getById(id) {
-        return products.find(i => i.id === id);
+    static findById(productid) {
+        const db = getDb();
+
+        return db.collection('products').
+        findOne({
+                _id: new mongodb.ObjectID(productid)
+            })
+            .then(product => {
+                return product
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
 
-    static getProductsByCategoryId(categoryid) {
-        return products.filter(i => i.categoryid === categoryid);
+    static deleteById(productid){
+        const db = getDb();
+
+        return db.collection('products')
+            .deleteOne({_id : new mongodb.ObjectID(productid)})
+            .then( () => {
+                console.log('Deleted');
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
 
-    static Update(product) {
-        const index = products.findIndex(i => i.id === product.id);
+    static findByCategoryId(categoryid){
+        const db = getDb();
 
-        products[index].name = product.name
-        products[index].image = product.image
-        products[index].price = product.price
-        products[index].description = product.description
-        products[index].categoryid = product.categoryid
-
-    }
-
-    static DeleteById(id) {
-        const index = products.find(i => i.id === id);
-        products.splice(index, 1);
+        return db.collection('products')
+            .find({categories : categoryid})
+            .toArray()
+            .then(products => {
+                return products
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
 }
+
+module.exports = Product

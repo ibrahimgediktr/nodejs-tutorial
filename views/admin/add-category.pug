@@ -1,0 +1,16 @@
+extends ../layout/main-layout.pug 
+block content
+    form(action="/admin/add-category" method="POST")
+        .form-group.row
+            label(for="categoryName").col-sm-2.col-form-label Product Name
+            .col-sm-10
+                input.form-control#categoryName(type="text" name="categoryName")
+        .form-group.row
+            label(for="categoryDescription").col-sm-2.col-form-label Description
+            .col-sm-10
+                input.form-control#categoryDescription(type="text" name="categoryDescription")
+                
+
+        .form-group.row
+            .col-sm-10.offset-sm-2
+                input(type="submit" value="Save Category").btn.btn-primary   

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const adminController = require('../controllers/adminController')
+const adminController = require('../controllers/adminController');
 
 router.get('/products', adminController.getProducts);
 
@@ -9,11 +9,21 @@ router.get('/add-product', adminController.getAddProduct)
 
 router.post('/add-product', adminController.postAddProduct);
 
-router.get('/products/:productid', adminController.getEditProduct)
+router.get('/products/:productid', adminController.getEditProduct);
 
 router.post('/products', adminController.postEditProduct);
 
 router.post('/delete-product', adminController.postDeleteProduct);
+
+router.get('/add-category', adminController.getAddCategory)
+
+router.post('/add-category', adminController.postAddCategory);
+
+router.get('/categories', adminController.getCategories);
+
+router.get('/categories/:categoryid', adminController.getEditCategory);
+
+router.post('/categories', adminController.postEditCategory);
 
 
 module.exports = router;

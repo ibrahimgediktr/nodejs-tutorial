@@ -2,7 +2,7 @@ extends ../layout/main-layout.pug
 block content
     form(action="/admin/products" method="POST")
 
-        input#id(type="hidden" name="id" value=`${product.id}`)
+        input#id(type="hidden" name="id" value=`${product._id}`)
 
         .form-group.row
             label(for="productName").col-sm-2.col-form-label Product Name
@@ -21,13 +21,12 @@ block content
             .col-sm-10
                 input.form-control#productImage(type="text" name="productImage" value=`${product.image}`)
         .form-group.row
-            label(for="productCategory").col-sm-2.col-form-label Category
+            label(for="categoryid").col-sm-2.col-form-label Category
             .col-sm-10
-                select.form-control#productCategory(name="productCategory")
-                    option(value="-1") Select Category 
-                    each category in categories 
-                        option(value=`${category.id}` selected=category.id===product.categoryid) #{category.name}
-                
+                each category in categories     
+                    input(type="checkbox" name="categoryids" value=`${category._id}` checked=category.selected)
+                    | #{category.name}
+                    br
 
         .form-group.row
             .col-sm-10.offset-sm-2
