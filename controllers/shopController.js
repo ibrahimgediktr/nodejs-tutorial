@@ -111,3 +111,23 @@ module.exports.postCartItemDelete = (req, res, next) => {
         })
 
 }
+
+module.exports.getOrders = (req, res, next) => {
+    req.user
+        .getOrders()
+        .then(orders => {
+            res.render('shop/orders', {
+                title : 'Orders | Shopping',
+                path: '/orders',
+                orders:orders
+            })
+        })
+}
+
+module.exports.postOrder = (req, res, next) => {
+    req.user
+        .addOrder()
+        .then(() => {
+            res.redirect('/orders');
+        })
+}

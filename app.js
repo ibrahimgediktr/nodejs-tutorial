@@ -14,7 +14,7 @@ app.use((req, res, next) => {
     User.findByName('ibrahimgedik')
         .then(user => {
             req.user = new User(user.name, user.email, user.cart, user._id);
-            console.log(req.user);
+            // console.log(req.user);
             next()
         })
         .catch(error => {
@@ -49,7 +49,6 @@ mongoConnect(() => {
             return user;
         })
         .then(user => {
-            console.log(user);
             app.listen(3000)
         })
         .catch(error => {

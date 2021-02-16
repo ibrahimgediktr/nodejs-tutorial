@@ -126,7 +126,6 @@ module.exports.postAddCategory = (req, res, next) => {
 
     category.save()
         .then(result => {
-            console.log(result);
             res.redirect('/admin/categories?action=create')
         })
         .catch(error => {
