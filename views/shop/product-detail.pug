@@ -12,7 +12,9 @@ block content
             hr
             a(href="").btn.btn-link.p-0.mb-3 Telefon
                 h4.text-primary.mb-3 #{product.price} TL
-                button(type="submit").btn.btn-primary.btn-lg Add to Card
+                form(action='/cart' method='POST')
+                    input(type='hidden' name='productId' value=`${product._id}`)
+                    button(type='submit').btn.btn-outline-primary.btn-sm.ml-3 Add to Cart 
     .row
         .col-md-12 
             hr

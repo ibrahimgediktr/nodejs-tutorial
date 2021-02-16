@@ -3,7 +3,7 @@ const Category = require('../models/categoryModel');
 
 // Get Index
 module.exports.getIndex = (req, res, next) => {
-
+    console.log(req.session.isAuthenticated);
     Product.findAll()
         .then(products => {
             Category.findAll()
@@ -12,10 +12,10 @@ module.exports.getIndex = (req, res, next) => {
                         title: 'Homepage | Shopping',
                         products: products,
                         categories: categories,
-                        path: '/'
+                        path: '/',
+                        isAuthenticated: req.session.isAuthenticated
                     });
                 })
-
         })
 }
 
@@ -73,6 +73,7 @@ module.exports.getProduct = (req, res, next) => {
         })
 }
 
+// Get Cart
 module.exports.getCart = (req, res, next) => {
     req.user
         .getCart()
@@ -87,6 +88,7 @@ module.exports.getCart = (req, res, next) => {
         });
 }
 
+// Post Cart
 module.exports.postCart = (req, res, next) => {
 
     const productId = req.body.productId;
@@ -100,6 +102,7 @@ module.exports.postCart = (req, res, next) => {
         })
 }
 
+// Delete Cart
 module.exports.postCartItemDelete = (req, res, next) => {
 
     const productid = req.body.productid
@@ -112,18 +115,20 @@ module.exports.postCartItemDelete = (req, res, next) => {
 
 }
 
+// Get Orders
 module.exports.getOrders = (req, res, next) => {
     req.user
         .getOrders()
         .then(orders => {
             res.render('shop/orders', {
-                title : 'Orders | Shopping',
+                title: 'Orders | Shopping',
                 path: '/orders',
-                orders:orders
+                orders: orders
             })
         })
 }
 
+// Post Order
 module.exports.postOrder = (req, res, next) => {
     req.user
         .addOrder()
