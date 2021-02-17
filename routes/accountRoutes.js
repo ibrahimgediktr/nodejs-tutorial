@@ -1,20 +1,20 @@
-const express = require('express');
-const router = express.Router();
+// const express = require('express');
+// const router = express.Router();
 
-const accountController = require('../controllers/accountController')
+// const accountController = require('../controllers/accountController')
 
 
-router.get('/login', accountController.getLogin);
+// router.get('/login', accountController.getLogin);
 
-router.post('/login', accountController.postLogin);
+// router.post('/login', accountController.postLogin);
 
-router.get('/register', accountController.getRegister);
+// router.get('/register', accountController.getRegister);
 
-router.post('/register', accountController.postRegister);
+// router.post('/register', accountController.postRegister);
 
-router.get('/reset-password', accountController.getReset);
+// router.get('/reset-password', accountController.getReset);
 
-router.post('/reset-password', accountController.postReset);
+// router.post('/reset-password', accountController.postReset);
 
-module.exports = router;
+// module.exports = router;
 

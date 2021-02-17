@@ -1,6 +1,7 @@
-extends ../layout/main-layout.pug 
+extends ../layout/main-layout.pug
+
 block content
-    form(action="/admin/add-product" method="POST")
+    form(action="/admin/add-product" method="POST" style="padding-top:100px; padding-bottom:100px;")
         .form-group.row
             label(for="productName").col-sm-2.col-form-label Product Name
             .col-sm-10

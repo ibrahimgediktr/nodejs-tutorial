@@ -3,36 +3,69 @@ const Category = require('../models/categoryModel');
 
 // Get Index
 module.exports.getIndex = (req, res, next) => {
-    console.log(req.session.isAuthenticated);
-    Product.findAll()
+    // console.log(req.session.isAuthenticated);
+    Product.find()
         .then(products => {
-            Category.findAll()
+            Category.find()
                 .then(categories => {
-                    res.render('shop/index', {
+                    res.render('shop/products', {
                         title: 'Homepage | Shopping',
                         products: products,
-                        categories: categories,
-                        path: '/',
-                        isAuthenticated: req.session.isAuthenticated
+                        categories:categories,
+                        path: '/'
                     });
                 })
-        })
+        });
+    // Product.find()
+    //     .then(products => {
+    //         Category.findAll()
+    //             .then(categories => {
+    //                 res.render('shop/index', {
+    //                     title: 'Homepage | Shopping',
+    //                     products: products,
+    //                     categories: categories,
+    //                     path: '/',
+    //                     // isAuthenticated: req.session.isAuthenticated
+    //                 });
+    //             })
+    //     })
 }
 
 // Get Products
 module.exports.getProducts = (req, res, next) => {
 
-    Product.findAll()
+    // Query Operators
+    // - eq ( equal)
+    // - ne ( not equal)
+    // - gt ( greater than)
+    // - gte ( greater than or equal)
+    // - lt ( less then)
+    // - lte ( less then or equal)
+    // - in ( in)
+    // - nin ( not in)
+
+    Product.find()
         .then(products => {
-            Category.findAll()
-                .then(categories => {
+            Category.find()
+                .then(categories =>{
                     res.render('shop/products', {
                         title: 'Products | Shopping',
                         products: products,
-                        categories: categories,
+                        categories:categories,
                         path: '/products'
                     });
                 })
+            
+
+            // Category.findAll()
+            //     .then(categories => {
+            //         res.render('shop/products', {
+            //             title: 'Products | Shopping',
+            //             products: products,
+            //             categories: categories,
+            //             path: '/products'
+            //         });
+            //     })
         })
 }
 
@@ -63,7 +96,8 @@ module.exports.getProductsByCategoryId = (req, res, next) => {
 // Get Product
 module.exports.getProduct = (req, res, next) => {
 
-    Product.findById(req.params.productid)
+    // Product.findById(req.params.productid)
+    Product.findOne({_id:req.params.productid})
         .then(product => {
             res.render('shop/product-detail', {
                 title: product.name,
