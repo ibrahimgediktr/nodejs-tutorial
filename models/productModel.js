@@ -25,8 +25,15 @@ const productSchema = mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'User',
         required:true
-    }
+    },
+    categories: [{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Category',
+        required:true
+    }]
+
 });
+
 
 module.exports = mongoose.model('Product', productSchema);
 

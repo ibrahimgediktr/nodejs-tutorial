@@ -1,71 +1,42 @@
 const Product = require('../models/productModel');
 const Category = require('../models/categoryModel');
+const Order = require('../models/orderModel')
 
 // Get Index
 module.exports.getIndex = (req, res, next) => {
     // console.log(req.session.isAuthenticated);
     Product.find()
         .then(products => {
+            return products;
+        }).then(products => {
             Category.find()
                 .then(categories => {
                     res.render('shop/products', {
                         title: 'Homepage | Shopping',
                         products: products,
-                        categories:categories,
+                        categories: categories,
                         path: '/'
                     });
                 })
-        });
-    // Product.find()
-    //     .then(products => {
-    //         Category.findAll()
-    //             .then(categories => {
-    //                 res.render('shop/index', {
-    //                     title: 'Homepage | Shopping',
-    //                     products: products,
-    //                     categories: categories,
-    //                     path: '/',
-    //                     // isAuthenticated: req.session.isAuthenticated
-    //                 });
-    //             })
-    //     })
+        })
 }
 
 // Get Products
 module.exports.getProducts = (req, res, next) => {
 
-    // Query Operators
-    // - eq ( equal)
-    // - ne ( not equal)
-    // - gt ( greater than)
-    // - gte ( greater than or equal)
-    // - lt ( less then)
-    // - lte ( less then or equal)
-    // - in ( in)
-    // - nin ( not in)
-
     Product.find()
         .then(products => {
+            return products;
+        }).then(products => {
             Category.find()
-                .then(categories =>{
+                .then(categories => {
                     res.render('shop/products', {
                         title: 'Products | Shopping',
                         products: products,
-                        categories:categories,
+                        categories: categories,
                         path: '/products'
                     });
                 })
-            
-
-            // Category.findAll()
-            //     .then(categories => {
-            //         res.render('shop/products', {
-            //             title: 'Products | Shopping',
-            //             products: products,
-            //             categories: categories,
-            //             path: '/products'
-            //         });
-            //     })
         })
 }
 
@@ -75,10 +46,12 @@ module.exports.getProductsByCategoryId = (req, res, next) => {
     const categoryid = req.params.categoryid;
     const model = [];
 
-    Category.findAll()
+    Category.find()
         .then(categories => {
             model.categories = categories
-            return Product.findByCategoryId(categoryid)
+            return Product.find({
+                categories: categoryid
+            })
         })
         .then(products => {
             res.render('shop/products', {
@@ -97,7 +70,9 @@ module.exports.getProductsByCategoryId = (req, res, next) => {
 module.exports.getProduct = (req, res, next) => {
 
     // Product.findById(req.params.productid)
-    Product.findOne({_id:req.params.productid})
+    Product.findOne({
+            _id: req.params.productid
+        })
         .then(product => {
             res.render('shop/product-detail', {
                 title: product.name,
@@ -110,13 +85,15 @@ module.exports.getProduct = (req, res, next) => {
 // Get Cart
 module.exports.getCart = (req, res, next) => {
     req.user
-        .getCart()
-        .then(products => {
+        .populate('cart.items.productId')
+        .execPopulate()
+        .then(user => {
             res.render('shop/cart', {
                 title: 'Cart | Shopping',
                 path: '/cart',
-                products: products
+                products: user.cart.items
             });
+            console.log(user.cart.items);
         }).catch(err => {
             console.log(err);
         });
@@ -129,7 +106,7 @@ module.exports.postCart = (req, res, next) => {
 
     Product.findById(productId)
         .then(product => {
-            return req.user.postCart(product)
+            return req.user.addToCart(product)
         })
         .then(() => {
             res.redirect('/cart')
@@ -146,13 +123,11 @@ module.exports.postCartItemDelete = (req, res, next) => {
         .then(() => {
             res.redirect('/cart')
         })
-
 }
 
 // Get Orders
 module.exports.getOrders = (req, res, next) => {
-    req.user
-        .getOrders()
+    Order.find({'user.userId': req.user._id})
         .then(orders => {
             res.render('shop/orders', {
                 title: 'Orders | Shopping',
@@ -165,8 +140,33 @@ module.exports.getOrders = (req, res, next) => {
 // Post Order
 module.exports.postOrder = (req, res, next) => {
     req.user
-        .addOrder()
+        .populate('cart.items.productId')
+        .execPopulate()
+        .then(user => {
+            const order = new Order({
+                user:{
+                    userId: req.user._id,
+                    name:req.user.name,
+                    email:req.user.email
+                },
+                items: user.cart.items.map(p => {
+                    return {
+                        product:{
+                            _id:p.productId._id,
+                            name:p.productId.name,
+                            price:p.productId.price,
+                            image:p.productId.image
+                        },
+                        quantity:p.quantity
+                    }
+                })
+            })
+            return order.save()
+        })
         .then(() => {
-            res.redirect('/orders');
+            return req.user.clearCart();
+        })
+        .then(() => {
+            res.redirect('/orders')
         })
 }

@@ -41,7 +41,7 @@ module.exports.postAddProduct = (req, res, next) => {
     });
 
     product.save()
-        .then(result => {
+        .then(() => {
             res.redirect('/admin/products');
         })
         .catch(error => {
@@ -54,32 +54,30 @@ module.exports.getEditProduct = (req, res, next) => {
 
     Product.findById(req.params.productid)
         .then(product => {
-            res.render('admin/edit-product', {
-                title: 'Edit Product | Shopping',
-                path: '/admin/products',
-                product: product,
-                // categories: categories
-            });
-            // Category.findAll()
-            //     .then(categories => {
+            return product
+        })
+        .then(product => {
+            Category.find()
+                .then(categories => {
 
-            //         categories = categories.map(category => {
-            //             if (product.categories) {
-            //                 product.categories.find(item => {
-            //                     if (item == category._id) {
-            //                         category.selected = true;
-            //                     }
-            //                 })
-            //             }
-            //             return category
-            //         })
-            //         res.render('admin/edit-product', {
-            //             title: 'Edit Product | Shopping',
-            //             path: '/admin/products',
-            //             product: product,
-            //             categories: categories
-            //         });
-            //     })
+                    categories = categories.map(category => {
+                        if(product.categories){
+                            product.categories.find(item => {
+                                if(item.toString() === category._id.toString()) {
+                                    category.selected = true;
+                                }
+                            })
+                        }
+                        return category
+                    })
+
+                    res.render('admin/edit-product', {
+                        title: 'Edit Product | Shopping',
+                        path: '/admin/products',
+                        product: product,
+                        categories: categories
+                    })
+                })
         })
         .catch(error => {
             console.log(error);
@@ -94,19 +92,30 @@ module.exports.postEditProduct = (req, res, next) => {
     const price = req.body.productPrice
     const image = req.body.productImage
     const description = req.body.productDescription
-    // const categories = req.body.categoryids
+    const ids = req.body.categoryids
 
-    Product.findById(id)
-        .then(product => {
-            product.name = name;
-            product.price = price;
-            product.image = image;
-            product.description = description;
-            return product.save()
+    // Product.findById(id)
+    //     .then(product => {
+    //         product.name = name;
+    //         product.price = price;
+    //         product.image = image;
+    //         product.description = description;
+    //         product.categories= ids
+    //         return product.save()
+    //     })
+    Product.update({
+            _id: id
+        }, {
+            $set: {
+                name: name,
+                price: price,
+                image: image,
+                description: description,
+                categories: ids
+            }
         })
         .then(() => {
             res.redirect('/admin/products?action=edit')
-
         })
 }
 
@@ -114,7 +123,9 @@ module.exports.postEditProduct = (req, res, next) => {
 module.exports.postDeleteProduct = (req, res, next) => {
     const id = req.body.productid
 
-    Product.deleteOne({_id: id})
+    Product.deleteOne({
+            _id: id
+        })
         .then(() => {
             console.log('Product has been deleted');
             res.redirect('/admin/products?action=delete')
@@ -124,6 +135,7 @@ module.exports.postDeleteProduct = (req, res, next) => {
         })
 }
 
+// Get Add Category
 module.exports.getAddCategory = (req, res, next) => {
     res.render('admin/add-category', {
         title: 'New Category | Shopping',
@@ -131,18 +143,19 @@ module.exports.getAddCategory = (req, res, next) => {
     })
 }
 
+// Post Add Category
 module.exports.postAddCategory = (req, res, next) => {
 
     const name = req.body.categoryName;
     const description = req.body.categoryDescription;
 
     const category = new Category({
-        name:name,
-        description:description
+        name: name,
+        description: description
     })
 
     category.save()
-        .then(result => {
+        .then(() => {
             res.redirect('/admin/categories?action=create')
         })
         .catch(error => {
@@ -196,10 +209,10 @@ module.exports.postEditCategory = (req, res, next) => {
 }
 
 module.exports.postDeleteCategory = (req, res, next) => {
-   const id = req.body.categoryid;
-   
-   Category.findOneAndRemove(id)
-    .then(() => {
-        res.redirect('/admin/categories?action=delete')
-    })
+    const id = req.body.categoryid;
+
+    Category.findOneAndRemove(id)
+        .then(() => {
+            res.redirect('/admin/categories?action=delete')
+        })
 }

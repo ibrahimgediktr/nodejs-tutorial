@@ -20,7 +20,6 @@ app.use((req, res, next) => {
     User.findOne({name:'ibrahimgedik'})
         .then(user => {
             req.user = user
-            console.log(user);
             next()
         })
         .catch(error => {
@@ -38,7 +37,7 @@ const User = require('./models/userModel');
 // })
 
 app.use(bodyParser.urlencoded({
-    extended: false
+    extended: true
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use(cookieParser());
