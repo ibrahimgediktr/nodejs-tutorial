@@ -8,6 +8,17 @@ Packages I use.
  - mongodb
  - mongoose
  - body-parser
- - boostrap
+ - bootstrap
  - express-session
  - connect-mongodb-session
+ - bcrypt
+
+ ### Run the project
+
+```
+$ git clone https://github.com/ibrahimgediktr/nodejs-tutorial.git
+$ cd nodejs-tutorial
+$ npm start
+```
+
+Open http://localhost:3000 to view it in the browser.
