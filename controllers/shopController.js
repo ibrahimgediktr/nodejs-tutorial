@@ -4,7 +4,6 @@ const Order = require('../models/orderModel')
 
 // Get Index
 module.exports.getIndex = (req, res, next) => {
-    // console.log(req.session.isAuthenticated);
     Product.find()
         .then(products => {
             return products;
@@ -15,7 +14,8 @@ module.exports.getIndex = (req, res, next) => {
                         title: 'Homepage | Shopping',
                         products: products,
                         categories: categories,
-                        path: '/'
+                        path: '/',
+                        isAuthenticated:req.session.isAuthenticated
                     });
                 })
         })
@@ -34,7 +34,9 @@ module.exports.getProducts = (req, res, next) => {
                         title: 'Products | Shopping',
                         products: products,
                         categories: categories,
-                        path: '/products'
+                        path: '/products',
+                        isAuthenticated:req.session.isAuthenticated
+
                     });
                 })
         })
@@ -59,7 +61,8 @@ module.exports.getProductsByCategoryId = (req, res, next) => {
                 products: products,
                 categories: model.categories,
                 selectedCategory: categoryid,
-                path: '/products'
+                path: '/products',
+                isAuthenticated: req.session.isAuthenticated
             })
         })
 
@@ -69,7 +72,6 @@ module.exports.getProductsByCategoryId = (req, res, next) => {
 // Get Product
 module.exports.getProduct = (req, res, next) => {
 
-    // Product.findById(req.params.productid)
     Product.findOne({
             _id: req.params.productid
         })
@@ -77,7 +79,8 @@ module.exports.getProduct = (req, res, next) => {
             res.render('shop/product-detail', {
                 title: product.name,
                 product: product,
-                path: '/products'
+                path: '/products',
+                isAuthenticated: req.session.isAuthenticated
             })
         })
 }
@@ -91,7 +94,8 @@ module.exports.getCart = (req, res, next) => {
             res.render('shop/cart', {
                 title: 'Cart | Shopping',
                 path: '/cart',
-                products: user.cart.items
+                products: user.cart.items,
+                isAuthenticated: req.session.isAuthenticated
             });
             console.log(user.cart.items);
         }).catch(err => {
@@ -132,7 +136,8 @@ module.exports.getOrders = (req, res, next) => {
             res.render('shop/orders', {
                 title: 'Orders | Shopping',
                 path: '/orders',
-                orders: orders
+                orders: orders,
+                isAuthenticated: req.session.isAuthenticated
             })
         })
 }

@@ -10,17 +10,19 @@ module.exports.getProducts = (req, res, next) => {
                 title: 'Admin Products | Shopping',
                 products: products,
                 path: '/admin/products',
-                action: req.query.action
+                action: req.query.action,
+                isAuthenticated:req.session.isAuthenticated
+                
             });
         })
 }
 
 // Get Add Product
 module.exports.getAddProduct = (req, res, next) => {
-
     res.render('admin/add-product', {
         title: 'Add a New Product | Shopping',
-        path: '/admin/add-product'
+        path: '/admin/add-product',
+        isAuthenticated:req.session.isAuthenticated
     });
 }
 
@@ -75,7 +77,8 @@ module.exports.getEditProduct = (req, res, next) => {
                         title: 'Edit Product | Shopping',
                         path: '/admin/products',
                         product: product,
-                        categories: categories
+                        categories: categories,
+                        isAuthenticated:req.session.isAuthenticated
                     })
                 })
         })
@@ -139,7 +142,9 @@ module.exports.postDeleteProduct = (req, res, next) => {
 module.exports.getAddCategory = (req, res, next) => {
     res.render('admin/add-category', {
         title: 'New Category | Shopping',
-        path: '/admin/add-category'
+        path: '/admin/add-category',
+        isAuthenticated:req.session.isAuthenticated
+
     })
 }
 
@@ -171,7 +176,9 @@ module.exports.getCategories = (req, res, next) => {
                 title: 'Categories | Shopping',
                 path: '/admin/categories',
                 categories: categories,
-                action: req.query.action
+                action: req.query.action,
+                isAuthenticated:req.session.isAuthenticated
+
             })
         })
         .catch(error => {
@@ -186,7 +193,9 @@ module.exports.getEditCategory = (req, res, next) => {
             res.render('admin/edit-category', {
                 title: 'Edit Category | Shopping',
                 path: '/admin/categories',
-                category: category
+                category: category,
+                isAuthenticated:req.session.isAuthenticated
+
             })
         })
 
