@@ -3,7 +3,7 @@ block content
     form(action="/admin/products" method="POST")
 
         input#id(type="hidden" name="id" value=`${product._id}`)
-
+        input(type="hidden" name="_csrf" value=`${csrfToken}`)
         .form-group.row
             label(for="productName").col-sm-2.col-form-label Product Name
             .col-sm-10

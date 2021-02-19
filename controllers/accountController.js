@@ -5,7 +5,7 @@ module.exports.getLogin = (req, res, next) => {
     res.render('account/login', {
         title: 'Login | Shopping',
         path: '/login',
-        isAuthenticated: req.session.isAuthenticated
+        isAuthenticated: req.session.isAuthenticated,
     })
 }
 
@@ -85,4 +85,11 @@ module.exports.getReset = (req, res, next) => {
 
 module.exports.postReset = (req, res, next) => {
     res.redirect('/login')
+}
+
+module.exports.getLogout = (req, res, next) => {
+    req.session.destroy(err => {
+        console.log(err);
+        res.redirect('/')
+    })
 }

@@ -3,7 +3,8 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const mongoDbStore = require('connect-mongodb-session')(session)
+const mongoDbStore = require('connect-mongodb-session')(session);
+const csurf = require('csurf')
 
 const app = express();
 
@@ -54,7 +55,9 @@ app.use((req, res, next) => {
             next();
         })
         .catch(err => { console.log(err) });
-})
+});
+
+app.use(csurf());
 
 
 

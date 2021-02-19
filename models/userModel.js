@@ -100,6 +100,7 @@ userSchema.methods.clearCart = function() {
     return this.save()
 }
 
+
 module.exports = mongoose.model('User', userSchema)
 
 
