@@ -24,7 +24,7 @@ const errorController = require('./controllers/errorController');
 
 
 var store = new mongoDbStore({
-    uri: 'mongodb+srv://ibrahimgedik:8vkl2SKvTTxCQxiH@cluster0.aramg.mongodb.net/node-app?retryWrites=true&w=majority',
+    uri: `mongodb+srv://ibrahimgedik:${process.env.MONGO_PASSWORD}@cluster0.aramg.mongodb.net/node-app?retryWrites=true&w=majority`,
     collection: 'mySessions'
 })
 

@@ -5,7 +5,7 @@ const crypto = require('crypto');
 
 
 
-sgMail.setApiKey("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")
+sgMail.setApiKey(process.env.SENDMAIL_API_KEY)
 
 
 
