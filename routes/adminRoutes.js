@@ -1,33 +1,33 @@
 const express = require('express');
 const router = express.Router();
 
-const isAuthenticated = require('../middleware/authentication')
+const isAdmin = require('../middleware/isAdmin');
 const adminController = require('../controllers/adminController');
-const csrf = require('../middleware/csrf');
+const locals = require('../middleware/locals');
 
-router.get('/products',isAuthenticated, adminController.getProducts);
+router.get('/products',locals,isAdmin, adminController.getProducts);
 
-router.get('/add-product',csrf, isAuthenticated, adminController.getAddProduct)
+router.get('/add-product',locals, isAdmin, adminController.getAddProduct)
 
-router.post('/add-product', isAuthenticated, adminController.postAddProduct);
+router.post('/add-product',locals, isAdmin, adminController.postAddProduct);
 
-router.get('/products/:productid',csrf,isAuthenticated, adminController.getEditProduct);
+router.get('/products/:productid',locals,isAdmin, adminController.getEditProduct);
 
-router.post('/products',isAuthenticated, adminController.postEditProduct);
+router.post('/products',locals,isAdmin, adminController.postEditProduct);
 
-router.post('/delete-product', isAuthenticated, adminController.postDeleteProduct);
+router.post('/delete-product',locals, isAdmin, adminController.postDeleteProduct);
 
-router.get('/add-category',csrf, isAuthenticated, adminController.getAddCategory)
+router.get('/add-category',locals, isAdmin, adminController.getAddCategory)
 
-router.post('/add-category', isAuthenticated, adminController.postAddCategory);
+router.post('/add-category',locals, isAdmin, adminController.postAddCategory);
 
-router.get('/categories',csrf, isAuthenticated, adminController.getCategories);
+router.get('/categories',locals, isAdmin, adminController.getCategories);
 
-router.get('/categories/:categoryid',csrf, isAuthenticated, adminController.getEditCategory);
+router.get('/categories/:categoryid',locals, isAdmin, adminController.getEditCategory);
 
-router.post('/categories', isAuthenticated, adminController.postEditCategory);
+router.post('/categories',locals, isAdmin, adminController.postEditCategory);
 
-router.post('/delete-category', isAuthenticated, adminController.postDeleteCategory);
+router.post('/delete-category',locals, isAdmin, adminController.postDeleteCategory);
 
 
 

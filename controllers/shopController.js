@@ -15,7 +15,6 @@ module.exports.getIndex = (req, res, next) => {
                         products: products,
                         categories: categories,
                         path: '/',
-                        isAuthenticated:req.session.isAuthenticated
                     });
                 })
         })
@@ -34,9 +33,7 @@ module.exports.getProducts = (req, res, next) => {
                         title: 'Products | Shopping',
                         products: products,
                         categories: categories,
-                        path: '/products',
-                        isAuthenticated:req.session.isAuthenticated
-
+                        path: '/products'
                     });
                 })
         })
@@ -62,7 +59,6 @@ module.exports.getProductsByCategoryId = (req, res, next) => {
                 categories: model.categories,
                 selectedCategory: categoryid,
                 path: '/products',
-                isAuthenticated: req.session.isAuthenticated
             })
         })
 
@@ -80,7 +76,6 @@ module.exports.getProduct = (req, res, next) => {
                 title: product.name,
                 product: product,
                 path: '/products',
-                isAuthenticated: req.session.isAuthenticated
             })
         })
 }
@@ -95,7 +90,6 @@ module.exports.getCart = (req, res, next) => {
                 title: 'Cart | Shopping',
                 path: '/cart',
                 products: user.cart.items,
-                isAuthenticated: req.session.isAuthenticated
             });
             console.log(user.cart.items);
         }).catch(err => {
@@ -137,7 +131,6 @@ module.exports.getOrders = (req, res, next) => {
                 title: 'Orders | Shopping',
                 path: '/orders',
                 orders: orders,
-                isAuthenticated: req.session.isAuthenticated
             })
         })
 }

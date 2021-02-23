@@ -1,14 +1,11 @@
 const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
-const session = require('express-session');
 const sgMail = require('@sendgrid/mail');
 const crypto = require('crypto');
-const { DH_NOT_SUITABLE_GENERATOR } = require('constants');
+
 
 
 sgMail.setApiKey("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")
-
-// apikey = "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"
 
 
 
@@ -18,7 +15,6 @@ module.exports.getLogin = (req, res, next) => {
     res.render('account/login', {
         title: 'Login | Shopping',
         path: '/login',
-        isAuthenticated: req.session.isAuthenticated,
         errorMessage: errorMessage
     })
 }
@@ -65,7 +61,6 @@ module.exports.getRegister = (req, res, next) => {
     res.render('account/register', {
         title: 'Register | Shopping',
         path: '/register',
-        isAuthenticated: req.session.isAuthenticated,
         errorMessage: errorMessage
     })
 }

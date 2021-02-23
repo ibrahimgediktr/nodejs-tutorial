@@ -11,8 +11,8 @@ module.exports.getProducts = (req, res, next) => {
                 products: products,
                 path: '/admin/products',
                 action: req.query.action,
-                isAuthenticated:req.session.isAuthenticated
-                
+                isAuthenticated:req.session.isAuthenticated,
+                isAdmin:req.user ? req.user.isAdmin : false
             });
         })
 }
@@ -22,7 +22,8 @@ module.exports.getAddProduct = (req, res, next) => {
     res.render('admin/add-product', {
         title: 'Add a New Product | Shopping',
         path: '/admin/add-product',
-        isAuthenticated:req.session.isAuthenticated
+        isAuthenticated:req.session.isAuthenticated,
+        isAdmin:req.user ? req.user.isAdmin : false
     });
 }
 
@@ -78,7 +79,8 @@ module.exports.getEditProduct = (req, res, next) => {
                         path: '/admin/products',
                         product: product,
                         categories: categories,
-                        isAuthenticated:req.session.isAuthenticated
+                        isAuthenticated:req.session.isAuthenticated,
+                        isAdmin:req.user ? req.user.isAdmin : false
                     })
                 })
         })
@@ -97,15 +99,6 @@ module.exports.postEditProduct = (req, res, next) => {
     const description = req.body.productDescription
     const ids = req.body.categoryids
 
-    // Product.findById(id)
-    //     .then(product => {
-    //         product.name = name;
-    //         product.price = price;
-    //         product.image = image;
-    //         product.description = description;
-    //         product.categories= ids
-    //         return product.save()
-    //     })
     Product.update({
             _id: id
         }, {
@@ -143,7 +136,8 @@ module.exports.getAddCategory = (req, res, next) => {
     res.render('admin/add-category', {
         title: 'New Category | Shopping',
         path: '/admin/add-category',
-        isAuthenticated:req.session.isAuthenticated
+        isAuthenticated:req.session.isAuthenticated,
+        isAdmin:req.user ? req.user.isAdmin : false
 
     })
 }
@@ -177,7 +171,8 @@ module.exports.getCategories = (req, res, next) => {
                 path: '/admin/categories',
                 categories: categories,
                 action: req.query.action,
-                isAuthenticated:req.session.isAuthenticated
+                isAuthenticated:req.session.isAuthenticated,
+                isAdmin:req.user ? req.user.isAdmin : false
 
             })
         })
@@ -194,7 +189,8 @@ module.exports.getEditCategory = (req, res, next) => {
                 title: 'Edit Category | Shopping',
                 path: '/admin/categories',
                 category: category,
-                isAuthenticated:req.session.isAuthenticated
+                isAuthenticated:req.session.isAuthenticated,
+                isAdmin:req.user ? req.user.isAdmin : false
 
             })
         })

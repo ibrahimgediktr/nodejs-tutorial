@@ -3,24 +3,25 @@ const router = express.Router();
 
 const isAuthenticated = require('../middleware/authentication')
 const shopController = require('../controllers/shopController');
+const locals = require('../middleware/locals')
 
-router.get('/', shopController.getIndex);
+router.get('/',locals, shopController.getIndex);
 
-router.get('/products', shopController.getProducts);
+router.get('/products',locals, shopController.getProducts);
 
-router.get('/products/:productid', shopController.getProduct);
+router.get('/products/:productid',locals, shopController.getProduct);
 
-router.get('/categories/:categoryid', shopController.getProductsByCategoryId);
+router.get('/categories/:categoryid',locals, shopController.getProductsByCategoryId);
 
-router.get('/cart',isAuthenticated, shopController.getCart);
+router.get('/cart',locals,isAuthenticated, shopController.getCart);
 
-router.post('/cart',isAuthenticated, shopController.postCart);
+router.post('/cart',locals,isAuthenticated, shopController.postCart);
 
-router.post('/delete-cartitem',isAuthenticated, shopController.postCartItemDelete)
+router.post('/delete-cartitem',locals,isAuthenticated, shopController.postCartItemDelete)
 
-router.get('/orders',isAuthenticated, shopController.getOrders);
+router.get('/orders',locals,isAuthenticated, shopController.getOrders);
 
-router.post('/create-order',isAuthenticated, shopController.postOrder);
+router.post('/create-order',locals,isAuthenticated, shopController.postOrder);
 
 
 module.exports = router;
