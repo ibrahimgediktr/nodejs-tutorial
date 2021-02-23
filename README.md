@@ -13,6 +13,8 @@ Packages I use.
  - connect-mongodb-session
  - bcrypt
  - csurf
+ - @sendgrid/mail
+ - dotenv
 
  ### Run the project
 

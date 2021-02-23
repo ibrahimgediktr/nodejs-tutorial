@@ -1,6 +1,8 @@
 extends ../layout/main-layout.pug
 
 block content
+    if errorMessage 
+        div.alert.alert-danger.col-sm-7 #{errorMessage}
     form(action="/register" method="POST")
         input(type="hidden" name="_csrf" value=`${csrfToken}`)
         .form-group.row

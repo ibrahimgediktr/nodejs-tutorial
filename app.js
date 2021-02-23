@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const mongoDbStore = require('connect-mongodb-session')(session);
 const csurf = require('csurf')
+require("dotenv").config();
 
 const app = express();
 
@@ -15,7 +16,7 @@ const adminRoutes = require('./routes/adminRoutes');
 const userRoutes = require('./routes/shopRoutes');
 const accountRoutes = require('./routes/accountRoutes')
 
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const User = require('./models/userModel');
 
@@ -23,7 +24,7 @@ const errorController = require('./controllers/errorController');
 
 
 var store = new mongoDbStore({
-    uri:'mongodb+srv://ibrahimgedik:8vkl2SKvTTxCQxiH@cluster0.aramg.mongodb.net/node-app?retryWrites=true&w=majority',
+    uri: 'mongodb+srv://ibrahimgedik:8vkl2SKvTTxCQxiH@cluster0.aramg.mongodb.net/node-app?retryWrites=true&w=majority',
     collection: 'mySessions'
 })
 
@@ -34,12 +35,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 app.use(session({
     secret: 'keyboard cat',
-    resave:false,
-    saveUninitialized:false,
+    resave: false,
+    saveUninitialized: false,
     cookie: {
-        maxAge:3600000
+        maxAge: 3600000
     },
-    store:store
+    store: store
 }));
 
 
@@ -54,7 +55,9 @@ app.use((req, res, next) => {
             req.user = user;
             next();
         })
-        .catch(err => { console.log(err) });
+        .catch(err => {
+            console.log(err)
+        });
 });
 
 app.use(csurf());
@@ -68,11 +71,13 @@ app.use(accountRoutes);
 
 app.use(errorController.get404Page);
 
-mongoose.connect('mongodb+srv://ibrahimgedik:8vkl2SKvTTxCQxiH@cluster0.aramg.mongodb.net/node-app?retryWrites=true&w=majority')
+const url = process.env.DB_URL
+
+mongoose.connect(url, {useUnifiedTopology: true, useNewUrlParser: true})
     .then(() => {
         console.log('Connected to MongoDB');
         app.listen(3000)
     })
-    .catch( error => {
+    .catch(error => {
         console.log(error);
     })
