@@ -23,6 +23,15 @@ Packages I use.
 $ git clone https://github.com/ibrahimgediktr/nodejs-tutorial.git
 $ cd nodejs-tutorial
 $ npm install
+```
+
+```
+DB_URL = "your db url"
+SENDMAIL_API_KEY = "your send mail api key"
+MONGO_PASSWORD = "your mongo password"
+```
+
+```
 $ npm start
 ```
 
